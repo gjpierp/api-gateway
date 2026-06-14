@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error - API Gateway</title>
+    <style>
+        body {
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #0f172a;
+            color: #f8fafc;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            text-align: center;
+        }
+        .error-container {
+            background-color: #1e293b;
+            padding: 50px;
+            border-radius: 12px;
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.3);
+            max-width: 550px;
+            border: 1px solid #334155;
+        }
+        h1 {
+            color: #ef4444;
+            font-size: 80px;
+            margin: 0 0 10px 0;
+            line-height: 1;
+        }
+        h2 {
+            font-size: 28px;
+            margin: 0 0 20px 0;
+            font-weight: 600;
+        }
+        p {
+            font-size: 16px;
+            margin-bottom: 30px;
+            color: #94a3b8;
+            line-height: 1.6;
+        }
+        .btn {
+            display: inline-block;
+            background-color: #3b82f6;
+            color: #ffffff;
+            text-decoration: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-weight: 600;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+        .btn:hover {
+            background-color: #2563eb;
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <div class="error-container">
+        <h1>Oops!</h1>
+        <h2>Ha ocurrido un error</h2>
+        <p>Lo sentimos, no hemos podido procesar tu solicitud. Es posible que el servicio o la ruta que buscas no se encuentre disponible en este momento.</p>
+        <a href="/" class="btn">Volver al Inicio</a>
+    </div>
+</body>
+</html>

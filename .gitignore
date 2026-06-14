@@ -1,0 +1,22 @@
+target/
+!.mvn/wrapper/maven-wrapper.jar
+/bin/
+/db/
+
+# IDEs y Editores
+.idea/
+*.iws
+*.iml
+*.ipr
+out/
+.vscode/
+.history/
+
+# Archivos del Sistema
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+.DS_Store
+
+# Logs
+*.log

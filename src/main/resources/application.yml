@@ -1,0 +1,57 @@
+# /*
+#  @file application.yml
+#  @description Configuración del API Gateway centralizador de microservicios y Swagger UI
+#  @author Gerado Paiva
+#  @date 2026-06-06
+#  @version 1.0.5
+#  HISTORIAL DE CAMBIOS:
+#  -----------------------------------------------------------------------------
+#  2026-06-06   | Asistente IA      | 1.0.5     | Limpieza de rutas antiguas y consolidación en sitio-base-backend.
+#  */
+
+server:
+  port: 8080
+
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+      routes:
+        # Enrutamiento de documentación OpenAPI/Swagger (Si aplica)
+        - id: sitio-base-backend-docs
+          uri: lb://sitio-base-backend
+          predicates:
+            - Path=/sitio-base-backend/v3/api-docs
+          filters:
+            - RewritePath=/sitio-base-backend/v3/api-docs, /v3/api-docs
+
+        # Enrutamiento de APIs funcionales
+        - id: sitio-base-backend-api
+          uri: lb://sitio-base-backend
+          predicates:
+            - Path=/api/**
+          filters:
+            - RewritePath=/api/(?<segment>.*), /api/$1
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://eureka-server:8761/eureka/
+  instance:
+    prefer-ip-address: true
+
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
+    disable-swagger-default-url: true
+    config-url: /v3/api-docs/swagger-config
+    urls:
+      - name: sitio-base-backend
+        url: /sitio-base-backend/v3/api-docs
