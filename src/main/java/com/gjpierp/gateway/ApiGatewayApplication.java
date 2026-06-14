@@ -11,7 +11,7 @@
  2026-06-04   | Gerardo Paiva     | 1.0.0     | Creación inicial del archivo.
  */
 
-package cl.fach.gateway;
+package com.gjpierp.gateway;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

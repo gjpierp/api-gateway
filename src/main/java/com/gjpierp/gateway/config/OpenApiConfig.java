@@ -11,7 +11,7 @@
  2026-06-04   | Gerardo Paiva     | 1.0.0     | Creación inicial del archivo.
  */
 
-package cl.fach.gateway.config;
+package com.gjpierp.gateway.config;
 
 import org.springdoc.core.properties.AbstractSwaggerUiConfigProperties.SwaggerUrl;
 import org.springdoc.core.properties.SwaggerUiConfigProperties;
