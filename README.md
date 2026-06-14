@@ -36,8 +36,8 @@ api-gateway/
 └── src/
     └── main/
         ├── java/
-        │   └── cl/
-        │       └── fach/
+        │   └── com/
+        │       └── gjpierp/
         │           └── gateway/
         │               ├── ApiGatewayApplication.java
         │               └── config/
@@ -48,8 +48,8 @@ api-gateway/
 ```
 
 ### Componentes Clave:
-*   [ApiGatewayApplication.java](file:///c:/Local/api-gateway/src/main/java/cl/fach/gateway/ApiGatewayApplication.java): Clase principal de arranque del microservicio.
-*   [OpenApiConfig.java](file:///c:/Local/api-gateway/src/main/java/cl/fach/gateway/config/OpenApiConfig.java): Bean de configuración con un scheduler fijo cada 30 segundos encargado de interrogar a Eureka sobre los microservicios activos, mapear sus rutas OpenAPI `/v3/api-docs` y poblar dinámicamente la configuración del Swagger UI de forma que no se requiera configuración estática para nuevos microservicios.
+*   [ApiGatewayApplication.java](file:///c:/Local/api-gateway/src/main/java/com/gjpierp/gateway/ApiGatewayApplication.java): Clase principal de arranque del microservicio.
+*   [OpenApiConfig.java](file:///c:/Local/api-gateway/src/main/java/com/gjpierp/gateway/config/OpenApiConfig.java): Bean de configuración con un scheduler fijo cada 30 segundos encargado de interrogar a Eureka sobre los microservicios activos, mapear sus rutas OpenAPI `/v3/api-docs` y poblar dinámicamente la configuración del Swagger UI de forma que no se requiera configuración estática para nuevos microservicios.
 *   [application.yml](file:///c:/Local/api-gateway/src/main/resources/application.yml): Configuración del puerto del servidor (`8080`), credenciales/URL de Eureka Server y definición declarativa de rutas base estáticas.
 
 ---
