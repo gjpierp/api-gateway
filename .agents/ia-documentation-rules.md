@@ -10,7 +10,7 @@ Instrucciones estrictas para la IA:
 - No inventar informacion que no pueda verificarse en el proyecto[cite: 37].
 - No asumir la existencia de modulos, aplicaciones, integraciones o tecnologias sin evidencia directa[cite: 18].
 - No resumir artificialmente el contenido documental.
-- Generar cada documento por separado, con contenido completo e independiente.
+- Generar cada documento por separado, con contenido completo e independiente. La creación de archivos debe usar el prefijo numérico (ej. `1_Acta_de_Constitucion.docx`).
 - Aplicar correccion ortografica obligatoria al contenido documental antes de generar el entregable final.
 - Utilizar automatizacion total con Python para producir fuentes, imagenes, tablas y documentos finales[cite: 43].
 - Reutilizar la plantilla base DOCX cuando exista, respetando sus estilos, campos estructurados y secciones predefinidas[cite: 69].
@@ -43,8 +43,9 @@ Salvo que el usuario indique un conjunto distinto, la IA debe considerar el sigu
 Reglas para el listado de documentos:
 - El listado debe entenderse como baseline documental.
 - La IA puede ampliarlo si el proyecto requiere documentos adicionales sustentados por evidencia real.
-- La IA puede omitir un documento solo si no aplica al proyecto y debe dejar esa condicion explicitamente justificada.
-- Cada documento debe generarse como entregable independiente, con su propio archivo fuente, script generador y salida final.
+    Cada documento debe generarse como entregable independiente, con su propio archivo fuente, script generador y salida final.
+    
+    **Excepción Crítica para Proyectos Nuevos (Fase 0/1):** Si el proyecto se está iniciando desde cero (Fase 0), **la fuente de la verdad es la Ideación y Definición del Negocio acordada con el usuario, NO la ingeniería inversa**. Los documentos fundacionales (1. Acta, 2. Estudio, 3. Plan, 4. Requisitos) deben generarse estrictamente desde esta ideación inicial sin intentar leer código que aún no existe. La ingeniería inversa se reserva exclusivamente para código legacy o fases de desarrollo avanzadas.
 
 ## 1. OBJETIVO
 Establecer un estandar reutilizable para la generacion de documentacion tecnica exhaustiva, detallada e individual de cualquier proyecto de software, mediante ingenieria inversa del repositorio, automatizacion total con Python y uso controlado de una plantilla documental base en formato DOCX cuando exista[cite: 43, 53].
@@ -56,20 +57,28 @@ Aplica a documentos funcionales, tecnicos, arquitectonicos, de datos, integracio
 ## 3. PRINCIPIOS RECTORES
 - La documentacion debe generarse a partir de evidencia real del proyecto[cite: 71].
 - Cada documento debe construirse de forma individual e independiente.
-- El contenido debe ser exhaustivo y no resumido artificialmente.
+- **Prohibición de Esqueletos y Resúmenes (Profundidad Extrema):** Queda terminantemente prohibido generar documentos superficiales, genéricos, "esqueletos" vacíos o resúmenes ejecutivos cortos. El contenido debe ser profundo, detallado y exhaustivo. Si se documenta una API, se deben incluir absolutamente todos los campos, restricciones y ejemplos. Si se documenta la arquitectura, se deben justificar los patrones con detalle exhaustivo.
+- **Tolerancia Cero a la Omisión:** La IA generadora NO DEBE resumir listas, tablas o descripciones para ahorrar espacio o tokens. Si hay 20 tablas en la base de datos, las 20 deben documentarse. Si hay 15 Casos de Uso, los 15 deben desglosarse paso a paso. Un documento de 1 o 2 páginas para un sistema completo se considera un fallo crítico.
 - La automatizacion debe realizarse integralmente con Python[cite: 43].
 - La documentacion final debe ser regenerable, mantenible y consistente[cite: 78].
 - No deben inventarse componentes, tecnologias, modulos o integraciones no presentes en el repositorio[cite: 37].
 
-## 4. FUENTE OFICIAL DE INFORMACION
-La fuente de verdad para la documentacion sera la evidencia observable en el proyecto, incluyendo: Codigo fuente, archivos de configuracion, dependencias declaradas, Dockerfiles, archivos compose, variables de entorno, scripts de despliegue, estructura de base de datos, objetos persistentes, contratos API, rutas, controladores, middlewares y artefactos de infraestructura asociados[cite: 4, 9, 18, 33]. Toda afirmacion incluida en la documentacion debe poder vincularse a una evidencia tecnica real del repositorio[cite: 71].
+## 3.1. MANDATO DE EXHAUSTIVIDAD OBLIGATORIA
+Para cualquier agente de IA que lea estas reglas: Tienes estrictamente prohibido aplicar algoritmos de "summarization" o simplificación de contenido. Tu objetivo no es ser breve, sino ser exhaustivo. Debes expandir las descripciones técnicas al máximo nivel de detalle profesional posible. La especificación debe ser tan completa que un desarrollador externo pueda replicar el sistema basándose únicamente en el documento generado.
 
-## 5. REGLAS DE GENERACION DOCUMENTAL
+## 4. FUENTE OFICIAL DE INFORMACION
+- **Para Proyectos en Fase 0 (Nuevos):** La única fuente de verdad es la definición, alcance y acuerdos tomados durante la maduración de la idea con el usuario. Queda prohibida la ingeniería inversa en esta fase.
+- **Para Proyectos Existentes/Avanzados:** La fuente de verdad para la documentacion sera la evidencia observable en el proyecto, incluyendo: Codigo fuente, archivos de configuracion, dependencias declaradas, Dockerfiles, archivos compose, variables de entorno, scripts de despliegue, estructura de base de datos, contratos API, etc. Toda afirmacion debe poder vincularse a una evidencia tecnica real.
+
+## 5. REGLAS DE GENERACION DOCUMENTAL Y NOMENCLATURA
+- **Nomenclatura de Archivos:** La creación de los archivos y carpetas debe incluir obligatoriamente el número correspondiente a su posición (ej. `1_Acta_de_Constitucion`, `2_Estudio_de_Viabilidad`).
+- **Regla de Actualización Incremental (No Sobrescribir):** Si el archivo destino (DOCX o Markdown) ya existe, el script de automatización NO DEBE sobrescribirlo destructivamente desde cero ni fallar. El script debe diseñarse para **abrir el archivo existente**, modificar, agregar o actualizar las secciones requeridas, y finalmente guardarlo preservando su estructura previa.
+- **Numeración Interna de Títulos:** Dentro del documento, **NO SE DEBE AGREGAR NÚMEROS A LOS TÍTULOS O ENCABEZADOS** (ej. escribir "Objetivo", nunca "1. Objetivo"). El estilo jerárquico de la plantilla DOCX ya tiene su propia numeración automática.
 - Cada documento se debe generar por separado.
 - No se deben fusionar varios documentos en un solo entregable, salvo instruccion explicita.
 - Cada documento debe tener contenido completo, portada, introduccion, historial de cambios, desarrollo, tablas, diagramas y cierre si corresponde.
-- El contenido debe mantener consistencia terminologica y tecnica entre todos los documentos del conjunto.
-- El nombre del proyecto debe respetarse exactamente como corresponda al repositorio analizado o a la instruccion formal recibida.
+- El contenido debe mantener consistencia terminologica y tecnica.
+- **Formato del Nombre del Proyecto (ESTRICTO):** El nombre del proyecto debe escribirse SIEMPRE EN MAYÚSCULAS. **Instrucción para el script Python:** Se DEBE aplicar explícitamente el método `.upper()` a la variable que contenga el nombre del proyecto antes de inyectarla en el DOCX o Markdown. Además, cada vez que se mencione dentro de un párrafo de texto, debe formatearse obligatoriamente en **negritas** (ej. "El proyecto **ERPGP** tiene como objetivo..."). Si el agente no aplica `.upper()`, se considera una violación crítica de la regla.
 
 ## 6. REGLAS DE AUTOMATIZACION
 - Todo el proceso de generacion debe quedar implementado mediante scripts en Python[cite: 43].
@@ -87,15 +96,17 @@ Cuando el proyecto disponga de una plantilla documental base:
 - La plantilla base no debe consumirse de manera destructiva ni quedar inutilizable tras la generacion.
 - La automatizacion debe trabajar sobre copias o documentos derivados, preservando intacto el archivo base original.
 
-## 8. CAMPOS DE FORMATO DEFINIDOS POR PLANTILLA Y AUTOMATIZACIÓN
-- Los campos estructurales de Título, Subtítulo, Año y Fechas deben ser actualizados programáticamente por el script de Python sobre los controles de contenido o propiedades del documento base original[cite: 70].
+## 8. CAMPOS DE FORMATO DEFINIDOS POR PLANTILLA Y AUTOMATIZACIÓN (CAMPOS DINÁMICOS)
+- **Problema Conocido (Falta de Actualización):** Es OBLIGATORIO asegurar que los campos dinámicos realmente se actualicen. Si los Controles de Contenido (Content Controls) de Word fallan, el script de Python debe buscar y reemplazar marcadores de texto (ej. `{{TITULO}}`), o modificar directamente las `core_properties` y el XML de las tablas del archivo DOCX.
+- **Tabla de Información del Documento (Llenado Obligatorio):** Queda estrictamente prohibido dejar campos vacíos en la tabla frontal de control. El script DEBE inyectar los siguientes valores:
+  - **Nombre del Proyecto:** El nombre exacto, SIEMPRE EN MAYÚSCULAS (forzado vía `.upper()` en Python).
+  - **Arquitecto de Software / Autor:** SIEMPRE debe ser "Gerardo Paiva" (esto es un estándar absoluto). **Instrucción para el script Python:** Se DEBE declarar estáticamente en el código como `autor = "Gerardo Paiva"` o inyectar el string literal directamente. Queda prohibido inferirlo del entorno o dejarlo parametrizable vacío.
+  - **Fecha de Aprobación:** Fecha actual o la indicada, estrictamente en formato DD/MM/YYYY.
+  - **Estado del Documento:** Inyectar un estado coherente (ej. "Aprobado", "Borrador", "En Revisión").
 - El titulo debe actualizarse con el nombre oficial del proyecto documentado.
-- El subtitulo debe actualizarse con el nombre especifico del documento generado.
-- El ano debe corresponder al periodo documental aplicable al proyecto o al documento.
-- Las fechas deben actualizarse segun el contexto documental requerido, por ejemplo emision, actualizacion, aprobacion o registro del cambio.
-- Si estos campos ya existen en la plantilla como propiedades, controles de contenido o campos automaticos, deben actualizarse sobre esa misma estructura[cite: 70].
-- No deben duplicarse como texto libre si ya estan definidos estructuralmente en la plantilla[cite: 70].
-- La automatizacion debe preservar el formato visual y funcional original del documento base[cite: 70].
+- El subtitulo debe actualizarse con el nombre especifico del documento (ej. "Acta de Constitución").
+- El ano debe corresponder al periodo documental aplicable.
+- Si estos campos ya existen en la plantilla como propiedades o controles, la automatización debe modificarlos exitosamente o usar un mecanismo de reemplazo agresivo sobre el XML del DOCX para asegurar la inserción de la data.
 
 ## 9. FORMATO OBLIGATORIO DE FECHAS
 Toda fecha generada o actualizada en el documento debe usar obligatoriamente el formato DD/MM/YYYY.
@@ -114,12 +125,12 @@ Reglas del historial de cambios:
 - Debe generarse o actualizarse automaticamente desde el proceso en Python.
 - Debe conservar consistencia entre versiones del mismo documento.
 - Debe registrarse al menos la version inicial del documento cuando se genere por primera vez.
-Contenido minimo del historial de cambios: Version, Fecha, Autor o responsable y Descripcion del cambio realizado.
+Contenido minimo del historial de cambios: Version, Fecha, Autor o responsable (el cual SIEMPRE debe ser "Gerardo Paiva" asignado de forma dura/estática en el script) y Descripcion del cambio realizado.
 Reglas operativas:
 - Si la plantilla ya incluye una seccion para control o historial de cambios, debe reutilizarse esa estructura.
 - Si la plantilla no la incluye, debe incorporarse respetando los estilos y formato base.
-- No debe eliminarse el historial previo al regenerar el documento, salvo instruccion explicita.
-- Las nuevas ejecuciones deben poder agregar o actualizar entradas de manera consistente.
+- **Actualización de Versiones (Apendice):** Si el documento ya existe, el script de Python debe localizar la tabla de historial de cambios y **AGREGAR una nueva fila** al final con la versión incrementada (ej. de v1.0 a v1.1), fecha, autor y detalle del cambio.
+- Queda estrictamente prohibido eliminar el historial previo al regenerar o actualizar el documento.
 
 ## 11. REGLAS DE FORMATO
 - Deben usarse todos los estilos relevantes definidos en la plantilla base[cite: 69].
@@ -140,11 +151,16 @@ Reglas de correccion ortografica:
 
 ## 11.2. FORMATO OBLIGATORIO DE TABLAS Y MECANISMO DE CONVERGENCIA
 - El estilo de tabla obligatorio para este contexto es 'Tabla de lista 4 - Énfasis 1'[cite: 69]. La automatizacion en Python mediante la libreria python-docx debe invocar explicitamente este nombre de estilo: `table.style = 'Tabla de lista 4 - Énfasis 1'`.
+- **Ancho Fijo Obligatorio:** Por defecto, TODAS las tablas generadas o modificadas por el script deben ajustarse a un ancho total de **17 cm** para alinearse con los márgenes del documento base. (En `python-docx` esto implica usar `docx.shared.Cm(17)` en el ancho total de la tabla).
 - Mecanismo de Fallback Controlado: Si el script de Python detecta mediante la inspeccion del catalogo de estilos del archivo 'doc_base.docx' que dicho estilo no se encuentra declarado, la automatizacion aplicara el estilo nativo estructurado mas cercano (ej. 'Light Shading Accent 1') y registrara una advertencia explicita en el log de ejecución del sistema, evitando que el proceso aborte por inconsistencia visual o errores de ejecucion en la libreria.
 - El estilo de tabla debe aplicarse tanto a tablas de contenido tecnico como a tablas de control de cambios, matrices, catalogos y resumenes documentales, salvo que la propia plantilla defina una excepcion estructural.
 
-## 12. REGLAS DE FIDELIDAD TECNICA
+## 12. REGLAS DE FIDELIDAD TÉCNICA Y PATRONES ENTERPRISE
+- **Detalle a Nivel de Código (Profundidad Máxima):** La documentación no debe ser solo conceptual. Debe reflejar exactamente los DTOs, entidades, relaciones de base de datos, métodos críticos y flujos de eventos que existan en el código (o en la ideación si es Fase 0). Un documento es inválido si parece un "esqueleto" genérico que podría aplicar a cualquier proyecto.
+- **Definición Estricta de Casos de Uso:** Es obligatorio documentar los Casos de Uso del sistema. No basta con listarlos; cada Caso de Uso debe estar profundamente definido incluyendo: Nombre, Actor principal, Precondiciones, Flujo Principal (paso a paso), Flujos Alternativos/Excepciones, y Postcondiciones.
 - No se deben documentar aplicaciones moviles, de escritorio, servicios externos, colas, integraciones o modulos no presentes, salvo evidencia directa[cite: 18, 37].
+- **Patrones Enterprise (Obligatorio):** Si la IA detecta que el repositorio implementa CQRS (Commands vs Queries), Eventos de Dominio (Event-Driven Architecture) o Patrón Outbox, debe documentarlos explícitamente en el "Diseño de Arquitectura de Software".
+- **Feature Flags:** De documentarse la gestión de despliegues, debe rastrearse e incluirse el catálogo de Feature Flags / Toggles si estos existen en el código.
 - Si un componente es opcional, alternativo, heredado o experimental, debe marcarse como tal.
 - Si un componente no aplica al proyecto, debe omitirse o declararse como no aplicable.
 - Si existe mas de una implementacion posible dentro del repositorio, debe diferenciarse claramente entre principal y secundaria.

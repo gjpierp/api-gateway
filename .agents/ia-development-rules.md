@@ -46,9 +46,10 @@ Implementaciones (Adapters): Ejecutan SQL, colas o HTTP externos en la infraestr
 4.2 Flutter (Móvil):
 - Gestión de Estado: Riverpod o Bloc de forma exclusiva. 
 - Caché Local (Offline-First): Incorporar caché en repositorios (SQLite, Hive). El usuario siempre debe poder visualizar su estado offline.
-4.3 Accesibilidad (a11y):
-Asegurar contraste alto (WCAG AA mínimo) y soporte completo para lectores de pantalla.
-4.4 Tiempo Real y WebSockets:
+4.3 Accesibilidad (a11y) e Internacionalización (i18n):
+Asegurar estándares altos de accesibilidad en ambas plataformas (WCAG AA mínimo, soporte para lectores de pantalla mediante etiquetas semánticas y Semantics en Flutter). Además, prohibir textos quemados (hardcoded) en la UI: todos los textos deben gestionarse a través de un sistema de Internacionalización (i18n) para soportar escalabilidad global.
+
+4.4 Tiempo Real (WebSockets / SSE):
 Actualizaciones críticas (pagos, estados) mediante WebSockets o SSE. Integración inmediata al estado reactivo.
 4.5 Trazabilidad Frontend (Correlation ID):
 Todos los clientes HTTP (interceptor en Angular/Flutter) deben generar e inyectar un encabezado `X-Correlation-ID` único por sesión/request, viajando hasta el backend para trazabilidad.
@@ -99,3 +100,32 @@ Respuestas íntegras 100%, funcionales y auto-contenidas. Sin elipsis ni placeho
 
 ## 15. PROTOCOLO DE RESPUESTAS DIRECTAS
 Omite saludos, ve directamente a la solución técnica pura.
+
+## 16. SEGURIDAD Y PRIVACIDAD (SECURE-BY-DEFAULT)
+- **Zero-Hardcoding:** Prohibido insertar credenciales, URLs secretas, o llaves de API directamente en el código fuente. Se exige el uso de inyección de configuración (Environment Variables).
+- **Control de Dependencias:** Está estrictamente prohibido instalar dependencias o paquetes externos sin autorización expresa, previniendo riesgos de la cadena de suministro (Supply Chain Attacks).
+- **Protección PII:** La información personalmente identificable debe ser enmascarada en los logs del servidor.
+- **Validación Zero-Trust:** Todo input o DTO recibido de los Inbound Adapters debe validarse estrictamente contra un esquema definido (ej. Zod, Jakarta Validation) antes de delegarlo a la capa de Aplicación.
+
+## 17. SRE Y RESILIENCIA (SITE RELIABILITY ENGINEERING)
+- **Tolerancia a Fallos (Circuit Breakers):** Toda llamada HTTP saliente a servicios de terceros debe implementar obligatoriamente un Timeout, un mecanismo de reintentos (Exponential Backoff) y un patrón Circuit Breaker.
+- **Idempotencia de APIs:** Todos los endpoints de mutación (Commands) que procesen operaciones críticas o transaccionales deben requerir y validar un encabezado `Idempotency-Key` para evitar la duplicidad accidental de transacciones.
+- **Límites de Recursos y Paginación:** Quedan estrictamente prohibidas las consultas a base de datos de listas sin límites (`unbounded queries`). Toda operación de listado debe estar obligatoriamente paginada (limit/offset o cursores) para prevenir saturación de memoria.
+
+## 18. DEFENSA ACTIVA Y CIBERSEGURIDAD ZERO-TRUST
+Para contrarrestar atacantes humanos avanzados y agentes autónomos maliciosos (IA), la arquitectura debe implementar una postura defensiva activa:
+- **Rate Limiting y Protección Bot/WAF:** Todos los Inbound Adapters (Controladores/APIs públicas) deben estar protegidos por políticas de Rate Limiting dinámicas y/o un WAF (Web Application Firewall) para mitigar el escaneo a alta velocidad y ataques de denegación de servicio (DDoS).
+- **Redes Zero-Trust (mTLS):** La comunicación interna entre contenedores y bases de datos debe ser autenticada. Se recomienda encarecidamente el uso de Mutual TLS (mTLS) para que un compromiso parcial no permita el movimiento lateral del atacante.
+- **Gestión Efímera de Secretos:** Se debe priorizar el uso de bóvedas de seguridad (como HashiCorp Vault o AWS Secrets Manager) que permitan la rotación automática de credenciales de base de datos, inutilizando los secretos robados a corto plazo.
+- **Autenticación Fuerte (Passwordless/Passkeys):** Para proteger a los usuarios contra ataques de diccionario masivos generados por IA, los sistemas de identidad deben soportar o priorizar la autenticación multifactor (MFA) o estándares FIDO2 (Passkeys).
+- **Protección contra Prompt Injection:** Si el sistema integra modelos de lenguaje (LLMs), es obligatorio procesar todas las entradas del usuario a través de "Guardrails" o firewalls semánticos antes de interactuar con el modelo base para evitar instrucciones destructivas ocultas.
+
+## 19. OPERACIONES DE DÍA 2 (DAY-2 OPS) Y COMPLIANCE
+- **Auditoría Inmutable (Event Sourcing / Audit Logs):** Para sistemas con cumplimiento legal (SOC2/GDPR), la mutación de estado debe registrar un historial inmutable (Quién, Cuándo, Qué). Se prioriza el Soft-Delete y la gestión del "Derecho al Olvido" (TTL de datos personales).
+- **FinOps y GreenOps (Cost-Aware Architecture):** El diseño debe considerar límites duros de auto-escalado, políticas de archivado de datos fríos (ej. S3 Glaciar) y eliminación agresiva de entornos efímeros para optimizar presupuesto y huella de carbono.
+- **Ingeniería del Caos (Graceful Degradation):** Los módulos deben programarse bajo la premisa de que sus dependencias externas fallarán en producción. Si un módulo secundario cae, la plataforma principal debe seguir operativa con datos por defecto o degradación elegante.
+
+## 20. GOBIERNO DE APIS, ESCALABILIDAD Y DEVX (CULTURA SHIFT-LEFT)
+- **Gobierno de APIs:** Todo Inbound Adapter (API) debe tener una estrategia de versionado explícita (ej. `/v1/`) y generar automáticamente su contrato OpenAPI/Swagger desde el código. No hay API sin documentación viva.
+- **Caché Distribuido:** Para aliviar la base de datos principal bajo alto tráfico, se exige la implementación de estrategias de Caché (ej. Redis/Memcached) usando patrones *Cache-Aside* o *Write-Through* con políticas estrictas de expiración (TTL).
+- **DevX y Shift-Left Testing:** El desarrollo local debe utilizar entornos descartables idénticos a producción (DevContainers o Docker Compose). Se exige el uso de Pre-Commit Hooks (ej. Husky) para validar formato, linter, y seguridad estática *antes* de cada inyección de código.
