@@ -15,7 +15,7 @@ Instrucciones estrictas para la IA:
 - Utilizar automatizacion total con Python para producir fuentes, imagenes, tablas y documentos finales[cite: 43].
 - Reutilizar la plantilla base DOCX cuando exista, respetando sus estilos, campos estructurados y secciones predefinidas[cite: 69].
 - Aplicar a las tablas documentales el estilo exacto 'Tabla de lista 4 - Énfasis 1' cuando ese formato este definido en la plantilla base[cite: 69].
-- Mantener disponible el archivo doc_base.docx, o su equivalente, para reutilizacion posterior.
+- Mantener disponible el archivo `.agents/templates/doc_base.docx`, o su equivalente, para reutilizacion posterior.
 - Actualizar titulo, subtitulo, ano y fechas segun el proyecto y el documento que se solicite documentar[cite: 70].
 - Normalizar todas las fechas visibles al formato DD/MM/YYYY.
 - Implementar historial de cambios obligatorio en cada documento generado.
@@ -57,8 +57,8 @@ Aplica a documentos funcionales, tecnicos, arquitectonicos, de datos, integracio
 ## 3. PRINCIPIOS RECTORES
 - La documentacion debe generarse a partir de evidencia real del proyecto[cite: 71].
 - Cada documento debe construirse de forma individual e independiente.
-- **Prohibición de Esqueletos y Resúmenes (Profundidad Extrema):** Queda terminantemente prohibido generar documentos superficiales, genéricos, "esqueletos" vacíos o resúmenes ejecutivos cortos. El contenido debe ser profundo, detallado y exhaustivo. Si se documenta una API, se deben incluir absolutamente todos los campos, restricciones y ejemplos. Si se documenta la arquitectura, se deben justificar los patrones con detalle exhaustivo.
-- **Tolerancia Cero a la Omisión:** La IA generadora NO DEBE resumir listas, tablas o descripciones para ahorrar espacio o tokens. Si hay 20 tablas en la base de datos, las 20 deben documentarse. Si hay 15 Casos de Uso, los 15 deben desglosarse paso a paso. Un documento de 1 o 2 páginas para un sistema completo se considera un fallo crítico.
+- **Penalización por Resumen (Profundidad Extrema y Verbosa):** El mayor problema al documentar es la tendencia a resumir para ahorrar tokens. Tienes **ESTRICTAMENTE PROHIBIDO** usar técnicas de *summarization* o crear "esqueletos" genéricos. Cada archivo generado debe tener un nivel de detalle milimétrico y máximo. Si hay 50 campos en una tabla, se documentan los 50 uno por uno con su tipo de dato y restricciones. Si hay 20 excepciones en un flujo, se detallan las 20. El objetivo es que la documentación sea "verbosa" e infinitamente detallada.
+- **Tolerancia Cero a la Omisión:** Queda prohibido agrupar componentes diciendo "y otros 15 endpoints similares". Un documento de 1 o 2 páginas para un sistema completo se considera un fallo crítico y motivo de rechazo de la documentación.
 - La automatizacion debe realizarse integralmente con Python[cite: 43].
 - La documentacion final debe ser regenerable, mantenible y consistente[cite: 78].
 - No deben inventarse componentes, tecnologias, modulos o integraciones no presentes en el repositorio[cite: 37].
@@ -72,8 +72,11 @@ Para cualquier agente de IA que lea estas reglas: Tienes estrictamente prohibido
 
 ## 5. REGLAS DE GENERACION DOCUMENTAL Y NOMENCLATURA
 - **Nomenclatura de Archivos:** La creación de los archivos y carpetas debe incluir obligatoriamente el número correspondiente a su posición (ej. `1_Acta_de_Constitucion`, `2_Estudio_de_Viabilidad`).
-- **Regla de Actualización Incremental (No Sobrescribir):** Si el archivo destino (DOCX o Markdown) ya existe, el script de automatización NO DEBE sobrescribirlo destructivamente desde cero ni fallar. El script debe diseñarse para **abrir el archivo existente**, modificar, agregar o actualizar las secciones requeridas, y finalmente guardarlo preservando su estructura previa.
-- **Numeración Interna de Títulos:** Dentro del documento, **NO SE DEBE AGREGAR NÚMEROS A LOS TÍTULOS O ENCABEZADOS** (ej. escribir "Objetivo", nunca "1. Objetivo"). El estilo jerárquico de la plantilla DOCX ya tiene su propia numeración automática.
+- **Regla de Actualización Incremental (No Sobrescribir y Preservar Portada/Intro):** Si el archivo (DOCX) ya existe (`os.path.exists`), el script **TIENE ESTRICTAMENTE PROHIBIDO** crear un `Document()` nuevo y vacío. Debe instanciar `Document(file_path)` para abrir el existente. Además:
+  - **Portada:** Debe localizar los párrafos de la portada (normalmente los primeros) o buscar los *Content Controls* y forzar la actualización del Título Principal y Subtítulo del Documento.
+  - **Introducción:** Debe localizar el encabezado "Introducción" y actualizar/reemplazar los párrafos posteriores para reflejar los cambios arquitectónicos recientes.
+  - Al finalizar, debe guardar conservando todo lo anterior.
+- **PROHIBIDO NUMERAR TÍTULOS (CRÍTICO):** La IA y el script de Python tienen estrictamente prohibido anteponer números a los encabezados o títulos de las secciones. **NUNCA ESCRIBAS "1. Objetivo" o "2.1 Alcance"**. Debes escribir únicamente "Objetivo" o "Alcance". La plantilla DOCX ya tiene configurada su propia numeración automática y al agregar números estáticos se arruina el índice.
 - Cada documento se debe generar por separado.
 - No se deben fusionar varios documentos en un solo entregable, salvo instruccion explicita.
 - Cada documento debe tener contenido completo, portada, introduccion, historial de cambios, desarrollo, tablas, diagramas y cierre si corresponde.
@@ -92,7 +95,7 @@ Cuando el proyecto disponga de una plantilla documental base:
 - Deben respetarse todos los estilos definidos en la plantilla[cite: 69].
 - La portada, introduccion, tablas, contenido y demas estructuras preexistentes deben reutilizarse cuando existan.
 - No debe sustituirse la identidad documental de la plantilla por estilos arbitrarios.
-- El archivo doc_base.docx, o su equivalente en cada proyecto, debe quedar disponible para su utilizacion futura.
+- El archivo `.agents/templates/doc_base.docx`, o su equivalente en cada proyecto, debe quedar disponible para su utilizacion futura.
 - La plantilla base no debe consumirse de manera destructiva ni quedar inutilizable tras la generacion.
 - La automatizacion debe trabajar sobre copias o documentos derivados, preservando intacto el archivo base original.
 
@@ -100,7 +103,7 @@ Cuando el proyecto disponga de una plantilla documental base:
 - **Problema Conocido (Falta de Actualización):** Es OBLIGATORIO asegurar que los campos dinámicos realmente se actualicen. Si los Controles de Contenido (Content Controls) de Word fallan, el script de Python debe buscar y reemplazar marcadores de texto (ej. `{{TITULO}}`), o modificar directamente las `core_properties` y el XML de las tablas del archivo DOCX.
 - **Tabla de Información del Documento (Llenado Obligatorio):** Queda estrictamente prohibido dejar campos vacíos en la tabla frontal de control. El script DEBE inyectar los siguientes valores:
   - **Nombre del Proyecto:** El nombre exacto, SIEMPRE EN MAYÚSCULAS (forzado vía `.upper()` en Python).
-  - **Arquitecto de Software / Autor:** SIEMPRE debe ser "Gerardo Paiva" (esto es un estándar absoluto). **Instrucción para el script Python:** Se DEBE declarar estáticamente en el código como `autor = "Gerardo Paiva"` o inyectar el string literal directamente. Queda prohibido inferirlo del entorno o dejarlo parametrizable vacío.
+  - **Arquitecto de Software / Autor:** SIEMPRE debe ser "Gerardo Paiva G." (esto es un estándar absoluto). **Instrucción para el script Python:** Se DEBE declarar estáticamente en el código como `autor = "Gerardo Paiva G."` o inyectar el string literal directamente. Queda prohibido inferirlo del entorno o dejarlo parametrizable vacío.
   - **Fecha de Aprobación:** Fecha actual o la indicada, estrictamente en formato DD/MM/YYYY.
   - **Estado del Documento:** Inyectar un estado coherente (ej. "Aprobado", "Borrador", "En Revisión").
 - El titulo debe actualizarse con el nombre oficial del proyecto documentado.
@@ -125,12 +128,12 @@ Reglas del historial de cambios:
 - Debe generarse o actualizarse automaticamente desde el proceso en Python.
 - Debe conservar consistencia entre versiones del mismo documento.
 - Debe registrarse al menos la version inicial del documento cuando se genere por primera vez.
-Contenido minimo del historial de cambios: Version, Fecha, Autor o responsable (el cual SIEMPRE debe ser "Gerardo Paiva" asignado de forma dura/estática en el script) y Descripcion del cambio realizado.
+Contenido minimo del historial de cambios: Version, Fecha (DD/MM/YYYY), Autor o responsable (el cual SIEMPRE debe ser "Gerardo Paiva G." asignado de forma dura/estática en el script) y Descripcion del cambio realizado.
 Reglas operativas:
 - Si la plantilla ya incluye una seccion para control o historial de cambios, debe reutilizarse esa estructura.
 - Si la plantilla no la incluye, debe incorporarse respetando los estilos y formato base.
-- **Actualización de Versiones (Apendice):** Si el documento ya existe, el script de Python debe localizar la tabla de historial de cambios y **AGREGAR una nueva fila** al final con la versión incrementada (ej. de v1.0 a v1.1), fecha, autor y detalle del cambio.
-- Queda estrictamente prohibido eliminar el historial previo al regenerar o actualizar el documento.
+- **Actualización de Versiones (Append Row):** Si el documento ya existe, el script de Python DEBE localizar la tabla de historial de cambios (iterando por las tablas del DOCX) y usar `table.add_row()` para **AGREGAR una nueva fila** al final. Debe inyectar la versión incrementada (ej. de v1.0 a v1.1), la fecha en formato DD/MM/YYYY, el autor ("Gerardo Paiva G.") y el detalle exacto del cambio.
+- Queda estrictamente prohibido eliminar, vaciar o sobrescribir las filas anteriores del historial.
 
 ## 11. REGLAS DE FORMATO
 - Deben usarse todos los estilos relevantes definidos en la plantilla base[cite: 69].
@@ -152,7 +155,7 @@ Reglas de correccion ortografica:
 ## 11.2. FORMATO OBLIGATORIO DE TABLAS Y MECANISMO DE CONVERGENCIA
 - El estilo de tabla obligatorio para este contexto es 'Tabla de lista 4 - Énfasis 1'[cite: 69]. La automatizacion en Python mediante la libreria python-docx debe invocar explicitamente este nombre de estilo: `table.style = 'Tabla de lista 4 - Énfasis 1'`.
 - **Ancho Fijo Obligatorio:** Por defecto, TODAS las tablas generadas o modificadas por el script deben ajustarse a un ancho total de **17 cm** para alinearse con los márgenes del documento base. (En `python-docx` esto implica usar `docx.shared.Cm(17)` en el ancho total de la tabla).
-- Mecanismo de Fallback Controlado: Si el script de Python detecta mediante la inspeccion del catalogo de estilos del archivo 'doc_base.docx' que dicho estilo no se encuentra declarado, la automatizacion aplicara el estilo nativo estructurado mas cercano (ej. 'Light Shading Accent 1') y registrara una advertencia explicita en el log de ejecución del sistema, evitando que el proceso aborte por inconsistencia visual o errores de ejecucion en la libreria.
+- Mecanismo de Fallback Controlado: Si el script de Python detecta mediante la inspeccion del catalogo de estilos del archivo '.agents/templates/doc_base.docx' que dicho estilo no se encuentra declarado, la automatizacion aplicara el estilo nativo estructurado mas cercano (ej. 'Light Shading Accent 1') y registrara una advertencia explicita en el log de ejecución del sistema, evitando que el proceso aborte por inconsistencia visual o errores de ejecucion en la libreria.
 - El estilo de tabla debe aplicarse tanto a tablas de contenido tecnico como a tablas de control de cambios, matrices, catalogos y resumenes documentales, salvo que la propia plantilla defina una excepcion estructural.
 
 ## 12. REGLAS DE FIDELIDAD TÉCNICA Y PATRONES ENTERPRISE

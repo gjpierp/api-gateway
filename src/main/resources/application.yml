@@ -38,6 +38,15 @@ spring:
           filters:
             - RewritePath=/api/(?<segment>.*), /api/$1
 
+        # Enrutamiento Tesoreria Backend
+        - id: tesoreria-curso-backend
+          uri: lb://TESORERIA-SERVICE
+          predicates:
+            - Path=/tesoreria-api/**
+          filters:
+            - RewritePath=/tesoreria-api/(?<segment>.*), /api/$1
+
+
 eureka:
   client:
     service-url:
