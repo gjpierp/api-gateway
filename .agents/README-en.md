@@ -6,13 +6,27 @@ Welcome to the **Everything Agent System**, a bleeding-edge framework for autono
 
 This system is designed to simulate an entire Enterprise IT organization—from Product Management and Design, to Architecture, Security, FinOps, SRE, and Compliance.
 
-## 🚀 Features
+## 🚀 Features (Singularity Update)
 
+- **Agent Zero Protocol (Live-Sync):** The framework injects itself globally. Any new project will automatically establish symbolic links (Junctions) to a single centralized brain, guaranteeing real-time rule synchronization.
+- **Absolute Resilience (0-Failures):** Active-Active *Multi-Region deployments*, *Chaos Engineering* integration (Chaos Mesh), and indestructible *Offline-First* UIs.
+- **Hardcore Coding & Extreme Quality:** Agents are constrained to operate with controlled Cyclomatic Complexity, *Strict Immutability*, mandatory *GoF Design Patterns*, and Zero Tolerance for Technical Debt (No TODOs, no linters silencing).
 - **Stage-Gate Workflow:** A strict, phased approach preventing AIs from writing code before architecture and security are validated.
-- **Swarm Intelligence:** Múltiple AI agents debate code quality (Actor-Critic reflection) instead of doing traditional single-pass generation.
-- **Self-Healing:** Operations agents autonomously reproduce bugs, write hotfixes, and deploy zero-touch remediations.
+- **The Final Frontier:** Mathematical formal verification (TLA+/SMT), *Business Observability* straight to Grafana, *FinOps* engineering, and automated *Architecture as Code (C4 Model/ADRs)* generation.
+- **Swarm Intelligence:** Multiple AI agents debate code quality (Actor-Critic reflection) instead of doing traditional single-pass generation.
+- **Self-Healing & Cron Agents:** Operations agents autonomously reproduce bugs, deploy zero-touch remediations, and a nocturnal sub-agent scans and auto-refactors obsolete libraries overnight.
 - **Quantum-Safe & GRC:** Enforces strict legal compliance, data sovereignty, and lattice-based cryptography for future-proof security.
-- **Adaptive Architecture:** Automatically detects and respects legacy architectures (MVC, 3-Tier), while dynamically refactoring bottlenecks in real-time (Fitness Functions).
+- **Semantic Routing & Edge Inference:** Cost and latency optimization using lightweight semantic routers and local WebGPU/WASM multi-threaded execution in the client browser with cross-model consensus (Multi-LLM).
+- **Score & Immutable OS (Platform Engineering):** Cloud-agnostic abstract resource declaration in `score.yaml` (Score) and deployment on minimal, immutable host operating systems (Talos/Flatcar Linux) with reactive FinOps scaling (KEDA and Karpenter).
+- **Runtime Security & Immunity (RASP with eBPF):** Active kernel-level syscall filtering and shielding against compromised third-party dependencies in production containers.
+- **Analytical Mathematical Privacy (FHE & Differential Privacy):** Automated Laplace/Gaussian noise injection in analytical queries (OLAP) over PII datasets and direct indexing/searching on encrypted fields (Fully Homomorphic Encryption).
+- **Blockchain Forensic Governance:** Immutable audit trails anchored to distributed ledgers (Blockchains) for absolute non-repudiation of security logs.
+- **High-Precision Testing & Resilience:** Automated backup restore validation, memory leak audits, cross-engine layout verification (WebKit/Safari Matrix), Starlink satellite network link degradation simulation, and third-party API chaos testing.
+- **Session Concurrency Control:** Prevention of tab/window spam using a Redis Sorted Set (ZSET) in the backend and interactive heartbeat lifecycles in the frontend.
+- **Architectural & Technology Flexibility:** Fully adaptable agent roles and linters that dynamically adjust to the programming language in use and the architecture defined in the project's root `CONTEXT.md` or ADRs (retaining PostgreSQL and Spring Boot as default references).
+- **Genetic Code Auto-Mutation:** Continuous overnight optimization of algorithms using automated IA code mutations, validated by unit, parity, and load tests (Fitness Functions).
+- **Quantum-Classical Hybrid Computing:** Decoupling and asynchronous delegation of high-density combinatorial optimization (NP-hard) problems to Quantum Processing Units (QPUs) using APIs and dedicated SDKs (e.g., Qiskit).
+
 
 ## 🔄 The 6-Phase Lifecycle
 
@@ -26,30 +40,27 @@ The `agents.md` file acts as the state machine governing the entire lifecycle:
 *   **FASE 5 (SRE & Digital Twins):** Pre-production stress testing via AI Shadow Traffic, and production Self-Healing monitoring.
 
 ## 🤖 The Agent Roster
-
-The directory contains specialized rulefiles for each autonomous agent:
-- `ia-product-rules.md` (Product & Agile)
-- `ia-design-rules.md` (UI/UX)
-- `ia-development-rules.md` (Software Engineering)
-- `ia-code-review-rules.md` (Code Quality)
-- `ia-security-rules.md` (DevSecOps)
-- `ia-devops-rules.md` (IaC & Pipelines)
-- `ia-operations-rules.md` (SRE & Post-Mortems)
-- `ia-memory-rules.md` (Context & ADRs)
-- `ia-handoff-rules.md` (Inter-Agent Protocols)
-- `ia-finops-rules.md` (Cloud Cost Control)
-- `ia-data-mlops-rules.md` (Data Engineering)
-- `ia-testing-rules.md` (TDD & Automation)
-- `ia-ux-mutation-rules.md` (Dynamic UIs)
-- `ia-quantum-safe-rules.md` (Post-Quantum Security)
-- `ia-edge-web3-rules.md` (Decentralization)
-- `ia-nocode-rules.md` (Pragmatismo / No-Code)
-- `ia-legacy-rules.md` (Reverse Engineering & Refactor)
-- `ia-compliance-rules.md` (GRC & Auditoría Forense)
-- `ia-reflection-rules.md` (Actor-Critic Debate)
-- `ia-evolution-rules.md` (Fitness Functions)
-- `ia-digital-twin-rules.md` (Chaos & Simulation)
-- `ia-self-healing-rules.md` (Zero-Touch Remediation)
+ 
+ The directory contains specialized rulefiles for each autonomous agent:
+ - `ia-product-rules.md` (Product & Agile)
+ - `ia-design-rules.md` (UI/UX)
+ - `ia-development-rules.md` (Software Engineering)
+ - `ia-code-review-rules.md` (Code Quality)
+ - `ia-security-rules.md` (DevSecOps & Cybersecurity)
+ - `ia-devops-sre-rules.md` (DevOps, Infrastructure, SRE & FinOps)
+ - `ia-memory-rules.md` (Context & ADRs)
+ - `ia-handoff-rules.md` (Inter-Agent Protocols)
+ - `ia-data-mlops-rules.md` (Data Engineering)
+ - `ia-testing-rules.md` (TDD & Automation)
+ - `ia-ux-mutation-rules.md` (Dynamic UIs)
+ - `ia-edge-web3-rules.md` (Decentralization & Edge)
+ - `ia-nocode-rules.md` (Pragmatismo / No-Code)
+ - `ia-legacy-rules.md` (Reverse Engineering & Refactor)
+ - `ia-compliance-rules.md` (GRC & Forensic Audit)
+ - `ia-reflection-rules.md` (Actor-Critic Debate)
+ - `ia-evolution-rules.md` (Fitness Functions)
+ - `ia-digital-twin-rules.md` (Chaos & Simulation)
+ - `ia-subagents-rules.md` (Parallel Orchestration and Swarm)
 
 ## 🛠️ Usage
 

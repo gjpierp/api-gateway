@@ -35,6 +35,11 @@ Queda **TERMINANTEMENTE PROHIBIDO** proponer una "Reescritura Total" (Big Bang R
 2. **Aislar (Bounded Context):** Seleccionar un único dominio lógico del monolito (ej. "Facturación") para extraerlo.
 3. **Construir:** Diseñar el nuevo microservicio moderno usando Arquitectura Hexagonal y TDD.
 4. **Enrutar:** Configurar el Gateway para que las llamadas a "Facturación" vayan al nuevo microservicio, dejando el resto de llamadas apuntando al monolito viejo.
+5. **Shadow Routing (Enrutamiento en Espejo):** Como paso previo a la activación definitiva del nuevo microservicio, es obligatorio validar el comportamiento y la paridad de datos mediante Shadow Routing. El API Gateway duplicará de forma asíncrona la petición de entrada y la enviará tanto al monolito heredado como al nuevo microservicio. El sistema comparará las respuestas en segundo plano y alertará al equipo de ingeniería ante cualquier discrepancia en las estructuras de datos o respuestas lógicas antes de transferir el tráfico de producción de forma definitiva.
+
+## 6. DESOFUSCACIÓN Y MODERNIZACIÓN ASISTIDA POR IA (AI-ASSISTED MODERNIZATION)
+- **Desofuscación Semántica:** Al interactuar con código heredado que carezca de código fuente original, que esté ofuscado, o escrito en lenguajes descontinuados (ej. ejecutables binarios sin depuración, COBOL de bajo nivel, scripts de base de datos complejos de Oracle Forms), el agente de migración debe aplicar técnicas de desofuscación semántica utilizando modelos LLM de razonamiento local. El análisis debe mapear las firmas de las funciones físicas y traducirlas a descripciones lógicas abstractas.
+- **Validación Cruzada de Paridad:** Es obligatorio generar de forma automática suites de pruebas diferenciales de regresión (Differential Testing) en staging que inyecten millones de transacciones simultáneas tanto en el código desofuscado como en la nueva implementación modernizada para demostrar una paridad del 100% de los datos y respuestas bajo cualquier condición extrema.
 
 ## 5. CUMPLIMIENTO ZERO-FLUFF
 Este agente opera bajo las reglas globales de Eficiencia de Tokens. Entrega el diagnóstico arquitectónico de manera transaccional, directa y sin preámbulos. Usa diagramas Mermaid para ilustrar el estado actual vs el estado futuro propuesto.
