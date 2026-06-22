@@ -81,10 +81,17 @@ Código, JSDoc y variables 100% en INGLÉS. Documentación robusta multilínea p
 Cero Tipos Ambiguos: Prohibido usar `any`. Tipado estricto en retornos de métodos.
 Seguridad: Variables de Vinculación (Bind Variables) obligatorias en toda consulta SQL para prevenir inyecciones. Propiedades `readonly` en el dominio.
 
-## 9. CI/CD, CONVENTIONAL COMMITS Y TRUNK-BASED DEVELOPMENT
-Integración Continua: Está prohibido el uso de ramas (branches) de larga duración. Se exige trabajar bajo la filosofía de Trunk-Based Development.
-Flujo Git Restringido y PRs: Queda **ESTRICTAMENTE PROHIBIDO** hacer `commit` directo a la rama `main` o `master`. La IA debe crear ramas de *feature* (ej. `feature/auth`) y simular flujos de *Pull Request* para code review.
-Conventional Commits: Todos los mensajes de commit generados por la IA deben usar el formato **Conventional Commits** (ej. `feat(api): add jwt`, `fix(db): correct index`, `chore: update deps`).
+## 9. CI/CD, CONVENTIONAL COMMITS Y GIT FLOW PERSONALIZADO
+Flujo Git Estructurado (Multi-Rama): Se exige abandonar el Trunk-Based Development en favor de un flujo de integración estructurado que garantice el paso seguro del código por entornos de prueba. El ciclo de vida de las ramas debe gestionarse estrictamente de la siguiente manera:
+- `main`: Rama principal de producción, inmutable y siempre estable (sustituye a `master`).
+- `release_xxx`: Rama para empaquetado, pruebas pre-producción y estabilización de versiones (ej. `release_v1.2.0`). Nace desde `test` y se fusiona a `main`.
+- `test`: Rama para despliegue en entornos de QA e Integración Continua (CI). Todo código aquí debe estar listo para revisión funcional.
+- `dev`: Rama base de desarrollo diario e integración de características.
+- `feature_xxx`: Ramas de desarrollo de nuevas características (ej. `feature_login`). Nacen SIEMPRE desde `dev` y se integran de vuelta a `dev` mediante Pull Requests.
+- `hotfix_xxx`: Ramas para corrección de errores críticos. Nacen desde `main` y se fusionan a `main`, `test` y `dev`.
+
+Reglas de Propagación y PRs: Queda **ESTRICTAMENTE PROHIBIDO** hacer `commit` directo a cualquier rama de integración (`main`, `release_xxx`, `test`, `dev`). La IA debe crear ramas temporales (como `feature_xxx`) y simular flujos de *Pull Request* para code review hacia `dev`, respetando el ciclo de propagación ascendente: `feature` -> `dev` -> `test` -> `release` -> `main`.
+Conventional Commits en Español: Todos los mensajes de commit generados automáticamente por la IA deben usar el formato **Conventional Commits** redactados estrictamente en español técnico (ej. `feat(api): agregar autenticacion jwt`, `fix(db): corregir indice de busqueda`, `chore: actualizar dependencias`), a pesar de que el código base y sus variables se mantengan en inglés.
 Feature Flags (Toggles): Todo código incompleto, flujos nuevos o refactors profundos deben integrarse a la rama principal (master/main) envueltos en Feature Flags, permitiendo despliegues a producción en modo apagado (Dark Launches) y rollbacks seguros instantáneos sin revertir código.
 **Limpieza Obligatoria de Feature Flags Muertos (Flag Debt Pruning):** Para evitar la acumulación de código espagueti y deuda técnica de toggles, una vez que una Feature Flag se habilite al 100% en producción de forma estable durante más de 14 días, el agente tiene la obligación estricta de proponer una tarea inmediata de refactorización para remover la flag, eliminar las ramificaciones lógicas muertas del código y limpiar configuraciones asociadas.
 - **Construcciones Herméticas (Network Hermeticity):** Los pipelines de CI/CD para la compilación de binarios y ejecución de pruebas deben configurarse bajo el principio de hermeticidad de red. Toda suite de compilación o testeo debe correr con el acceso a internet deshabilitado por completo, utilizando dependencias pre-cacheadas o proxies locales/registros internos inmutables (como Artifactory o Nexus) para prevenir inestabilidad y mitigar ataques de cadena de suministro.

@@ -31,7 +31,7 @@ El agente operará bajo las siguientes restricciones irrompibles:
 **DIRECTIVAS DE OPERACIONES (DAY-2) Y DEVX:**
 1. **Auditoría y Compliance:** Toda mutación de estado sensible debe dejar un registro inmutable (Audit Log / Event Sourcing).
 2. **Gobierno API y Caché:** Las APIs deben estar versionadas, contar con OpenAPI autogenerado, y contemplar estrategias de Caché Distribuido (Redis) para lecturas masivas.
-3. **Calidad Continua y Flujo Git:** Uso obligatorio de **Conventional Commits** y ramas de *feature* (cero commits directos a `main`). Las APIs deben devolver errores bajo el estándar global **RFC 7807**. Frontend obliga Accesibilidad **WCAG 2.1 AA**.
+3. **Calidad Continua y Flujo Git:** Uso obligatorio de **Git Flow Estructurado** (`main`, `dev`, `test`, `release_xxx`) con **Conventional Commits** (redactados estrictamente en español técnico) y ramas de *feature* (cero commits directos a las ramas de integración). Las APIs deben devolver errores bajo el estándar global **RFC 7807**. Frontend obliga Accesibilidad **WCAG 2.1 AA**.
 
 **DIRECTIVAS DE EFICIENCIA DE TOKENS Y PERFORMANCE (ZERO-FLUFF):**
 1. **Anti-Echo y Directividad:** Prohibido parafrasear o repetir la solicitud del usuario. Prohibidos los saludos, despedidas o explicaciones redundantes ("A continuación te muestro...", "Aquí tienes el código..."). Respuestas puramente transaccionales.
